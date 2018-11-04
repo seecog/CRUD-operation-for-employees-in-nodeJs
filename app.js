@@ -7,10 +7,21 @@ app.use(bodyParser.urlencoded({extended : true}))
 app.use(bodyParser.json());
 var mongoose = require('mongoose');
 var Employee = require('./models/employee.model')
-mongoose.connect("mongodb://localhost/company",()=>{
+mongoose.connect("mongodb://pankaj_119_119:pankaj12345@ds019866.mlab.com:19866/mycompany",()=>{
     console.log('database connecetd')
 })
-
+var cors = require('cors');
+var originsWhitelist = [
+'http://localhost:4200'
+];
+var corsOptions = {
+origin: function(origin, callback){
+var isWhitelisted = originsWhitelist.indexOf(origin) !== -1;
+callback(null, isWhitelisted);
+},
+credentials:true
+}
+app.use(cors(corsOptions));
 
 route.get('/test',(req,res)=>{
     res.json({
@@ -28,7 +39,7 @@ route.delete('/employees/:id',(req,res)=>{
         })
     })
 })
-
+//localhost:3000/api/employees
 route.post('/employees',(req,res)=>{
     console.log('Req is ',req.body)
 var emp = new Employee();
